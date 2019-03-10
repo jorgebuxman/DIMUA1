@@ -5,10 +5,9 @@
 
 SoftwareSerial emulado(1, 2);
 
-char auth[]="0a7edd63924d47fd8473698ea549750a";
-//char ssid[]="Esta_EXT2";
-char ssid[]="Esta";
-char pass[]="17042013";
+char auth[]="codigo suministrado por blynk";
+char ssid[]="Nombre de su red wifi";
+char pass[]="Contraseña de su red wifi";
 byte arduino_mac[]={0xDE, 0xED, 0xBA, 0xFE, 0xFE, 0xED};
 int pinValue, pinValueaux, valor;
 
@@ -37,23 +36,23 @@ void loop()
     {
       valor=0x00;
       emulado.write(valor);
-      //Serial.println(valor, DEC);
+      Serial.println(valor, DEC);
     }
     if(pinValue>250)
     {
       valor=0xfa;
       emulado.write(valor);
-      //Serial.println(valor, DEC);
+      Serial.println(valor, DEC);
     }
     if((pinValue>=70)&&(pinValue<=250))
     {
       valor=pinValue;
       emulado.write(valor);
-      //Serial.println(valor, DEC);
+      Serial.println(valor, DEC);
     }
     valor=0xaa;
     emulado.write(valor);
-    //Serial.println(valor, DEC);
+    Serial.println(valor, DEC);
     pinValueaux=pinValue;
   }
   Blynk.run();
