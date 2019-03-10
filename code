@@ -1,0 +1,60 @@
+#define BLYNK_PRINT Serial
+#include <SoftwareSerial.h>
+#include <ESP8266WiFi.h>
+#include <BlynkSimpleEsp8266.h>
+
+SoftwareSerial emulado(1, 2);
+
+char auth[]="0a7edd63924d47fd8473698ea549750a";
+//char ssid[]="Esta_EXT2";
+char ssid[]="Esta";
+char pass[]="17042013";
+byte arduino_mac[]={0xDE, 0xED, 0xBA, 0xFE, 0xFE, 0xED};
+int pinValue, pinValueaux, valor;
+
+BLYNK_WRITE(V1)
+{
+  pinValue=param.asInt();
+}
+
+void setup()
+{
+  pinMode(2, OUTPUT);
+  pinMode(1, INPUT);
+  Serial.begin(9600);
+  emulado.begin(9600);
+  Blynk.begin(auth, ssid, pass);
+  while(Blynk.connect()==false);
+  pinValue=0;
+  pinValueaux=0;
+}
+
+void loop()
+{
+  if(pinValue!=pinValueaux)
+  {
+    if(pinValue<70)
+    {
+      valor=0x00;
+      emulado.write(valor);
+      //Serial.println(valor, DEC);
+    }
+    if(pinValue>250)
+    {
+      valor=0xfa;
+      emulado.write(valor);
+      //Serial.println(valor, DEC);
+    }
+    if((pinValue>=70)&&(pinValue<=250))
+    {
+      valor=pinValue;
+      emulado.write(valor);
+      //Serial.println(valor, DEC);
+    }
+    valor=0xaa;
+    emulado.write(valor);
+    //Serial.println(valor, DEC);
+    pinValueaux=pinValue;
+  }
+  Blynk.run();
+}
